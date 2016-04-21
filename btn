@@ -1,0 +1,3 @@
+<input type="button" value="create pdf" onclick="location='int.php'" />
+<input type="button" value="create pdf" onclick="location='view.php'" />
+<input type="button" value="download pdf" onclick="location='download.php'" />
