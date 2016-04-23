@@ -79,20 +79,23 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } 
 
-$sql1 = "SELECT sum(total_amount) as annualmaintenance  FROM  AnnualMaintenance";
+$sql1 = "SELECT sum(total_amount) as annual_maintenance  FROM  AnnualMaintenance";
 $sql2 = "SELECT sum(amount)  as interest FROM  BankFdInterest";
 $sql3 = "SELECT sum(cost*hours_rented)  as clubhouse   FROM ClubHouse";
 $sql4 = "SELECT sum(total_amount) as miscellaneous  FROM  Miscellaneous";
-$sql5 = "SELECT sum(amount_paid) as nonoccupancy  FROM  Nonoccupancy";
-$sql6 = "SELECT sum(amount*percentage_amount/100) as plotsale  FROM  Plotsale";
+$sql5 = "SELECT sum(amount_paid) as nonoccupancy  FROM  NonOccupancy";
+$sql6 = "SELECT sum(amount*percentage_amount/100) as plotsale  FROM  PlotSale";
 
-$sql7 = "SELECT sum(amount_spent) as  beautification  FROM  Beautification";
-$sql8 = "SELECT sum(amount_spent)  as cleaning FROM  Cleaning";
-$sql9 = "SELECT sum(amount_spent)  as construction   FROM Construction";
-$sql10 = "SELECT sum(amount_spent) as cultural  FROM Cultural";
-$sql11 = "SELECT sum(amount_spent) as road  FROM  Road";
-$sql12 = "SELECT sum(amount_spent) as security  FROM  Security";
-$sql13 = "SELECT sum(amount_spent) as electrical  FROM  Electrical";
+$sql7 = "SELECT sum(total_amount) as  beautification  FROM  Beautification";
+$sql8 = "SELECT sum(total_amount)  as cleaning FROM  Cleaning";
+$sql9 = "SELECT sum(total_amount)  as construction   FROM Construction";
+$sql10 = "SELECT sum(total_amount) as cultural  FROM Cultural";
+$sql11 = "SELECT sum(total_amount) as road  FROM  Road";
+$sql12 = "SELECT sum(total_amount) as security  FROM  Security";
+$sql13 = "SELECT sum(total_amount) as electrical  FROM  Electrical";
+
+$sql14 = "SELECT sum(amount) as savings  FROM  SavingsBankInterest";
+
 
 $result1 = $conn->query($sql1);
 $result2 = $conn->query($sql2);
@@ -108,9 +111,11 @@ $result10 = $conn->query($sql10);
 $result11 = $conn->query($sql11);
 $result12 = $conn->query($sql12);
 $result13 = $conn->query($sql13);
+$result13 = $conn->query($sql14);
 $income = 0;
 $expenditure = 0;
 ?>
+
 <section id = "table" class= "bg-darkest-black">
 <div class="container">
 <div class="caption">Annexure</div>
@@ -206,6 +211,22 @@ if ($result5->num_rows > 0) {
     echo "0 results";
 }
 
+if ($result14->num_rows > 0) {
+    // output data of each row
+    while($row = $result14->fetch_assoc()) {
+        echo "<div class=row>";
+        echo "<span class=cell primary data-label=Description>";
+        echo "Plot Sale";
+        echo "</span>";
+        echo "<span class=cell primary data-label=Amount>";
+        echo $row["savings"];
+        $income = $income + $row["savings"];
+        echo "</span>";echo "</div>";
+    }
+} else {
+    echo "0 results";
+}
+
 if ($result6->num_rows > 0) {
     // output data of each row
     while($row = $result6->fetch_assoc()) {
@@ -229,6 +250,21 @@ if ($result6->num_rows > 0) {
         echo "<h5><b>".$income."</b></h5>";
         echo "</span>";echo "</div>";
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
 <div class="caption2">Expenditure</div>
 <div id="table">
